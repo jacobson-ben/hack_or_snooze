@@ -72,28 +72,34 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory(user, partialStory) {
+  async addStory(user, story) {
+    let token = user.loginToken
+    let data = {token, story}
+    console.log(data)
+    
+    let storyResult = await axios({
+      method: 'post',
+      url: 'https://hack-or-snooze-v3.herokuapp.com/stories',
+      data: data,
+      headers: {'Content-Type': 'application/json' }
+      })
 
-    let story = axios.post()
+      console.log(storyResult)
+    
+    
 
-    curl -i \
-     -H "Content-Type: application/json" \
-     -X POST \
-     -d '{"token":"PASTE_YOUR_TOKEN_HERE", "story": {"author":"Elie Schoppik","title":"Four Tips for Moving Faster as a Developer", "url": "https://www.rithmschool.com/blog/developer-productivity"} }' \
-      https://hack-or-snooze-v3.herokuapp.com/stories
+    // // UNIMPLEMENTED: complete this function!
+    // let storyId = 0;
+    // let {title,author,url} = partialStory;
+    // let {username,createdAt} = user;
+    // //create the instance for the story
+    // let storyInstance = new Story(storyId, title, author, url, username, createdAt);
 
-    // UNIMPLEMENTED: complete this function!
-    let storyId = 0;
-    let {title,author,url} = partialStory;
-    let {username,createdAt} = user;
-    //create the instance for the story
-    let storyInstance = new Story(storyId, title, author, url, username, createdAt);
+    // //add the story to the array of stories
+    // this.stories.push(storyInstance);
 
-    //add the story to the array of stories
-    this.stories.push(storyInstance);
-
-    //return the instance
-    return storyInstance;
+    // //return the instance
+    // return storyInstance;
   }
 }
 
