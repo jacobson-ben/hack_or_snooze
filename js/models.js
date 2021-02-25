@@ -7,7 +7,6 @@ const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
  */
 
 class Story {
-
   /** Make instance of Story from data object about story:
    *   - {title, author, url, username, storyId, createdAt}
    */
@@ -73,11 +72,32 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory( /* user, newStory */) {
+  async addStory(user, partialStory) {
+
+    let story = axios.post()
+
+    curl -i \
+     -H "Content-Type: application/json" \
+     -X POST \
+     -d '{"token":"PASTE_YOUR_TOKEN_HERE", "story": {"author":"Elie Schoppik","title":"Four Tips for Moving Faster as a Developer", "url": "https://www.rithmschool.com/blog/developer-productivity"} }' \
+      https://hack-or-snooze-v3.herokuapp.com/stories
+
     // UNIMPLEMENTED: complete this function!
+    let storyId = 0;
+    let {title,author,url} = partialStory;
+    let {username,createdAt} = user;
+    //create the instance for the story
+    let storyInstance = new Story(storyId, title, author, url, username, createdAt);
+
+    //add the story to the array of stories
+    this.stories.push(storyInstance);
+
+    //return the instance
+    return storyInstance;
   }
 }
 
+//constructor({ storyId, title, author, url, username, createdAt }) {
 
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)
