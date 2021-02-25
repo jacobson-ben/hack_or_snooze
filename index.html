@@ -36,6 +36,7 @@
 <nav>
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
+    <a class="nav-link" href="#" id="nav-submit">submit</a>
   </div>
   <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
@@ -44,9 +45,15 @@
   </div>
 </nav>
 
-<div class="" style="display: none">
-  <form>
-    <input value="something">
+<div id="submit-form">
+  <form class="form-inline">
+    <label for="author">author</label>
+      <input type="text" id="author" placeholder="author name">
+    <label for="title">title</label>
+      <input type="text" id="title" placeholder="story title">
+    <label for="title">url</label>
+      <input type="url" id="url" placeholder="story url">
+    <input type="submit" placeholder="submit">
   </form>
 </div>
 

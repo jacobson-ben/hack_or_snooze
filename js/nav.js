@@ -34,3 +34,13 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
+
+function displaySubmit(evt) {
+  console.log($submitForm.css("display"));
+  if($submitForm.css("display") === "none") {
+    $submitForm.show();
+  }
+  else { $submitForm.hide() }
+}
+
+$("#nav-submit").on("click", displaySubmit)
