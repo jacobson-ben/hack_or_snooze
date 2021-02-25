@@ -73,9 +73,9 @@ class StoryList {
    */
 
   async addStory(user, story) {
-    let token = user.loginToken
-    let data = {token, story}
-    console.log(data)
+    let token = user.loginToken;
+    let data = {token, story};
+    console.log(data);
     
     let storyResult = await axios({
       method: 'post',
@@ -83,23 +83,11 @@ class StoryList {
       data: data,
       headers: {'Content-Type': 'application/json' }
       })
-
-      console.log(storyResult)
     
-    
-
-    // // UNIMPLEMENTED: complete this function!
-    // let storyId = 0;
-    // let {title,author,url} = partialStory;
-    // let {username,createdAt} = user;
-    // //create the instance for the story
-    // let storyInstance = new Story(storyId, title, author, url, username, createdAt);
-
-    // //add the story to the array of stories
-    // this.stories.push(storyInstance);
-
-    // //return the instance
-    // return storyInstance;
+    let storyInstance = new Story(storyResult.data.story);
+    console.log(storyInstance);
+    this.stories.push(storyInstance);
+    return storyInstance;
   }
 }
 
