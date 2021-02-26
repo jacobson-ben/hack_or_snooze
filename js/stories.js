@@ -58,13 +58,13 @@ function updateFavoriteOnClick(parentId) {
   storyHash[parentId].favorite = !storyHash[parentId].favorite
 }
 
-/** Gets list of stories from server, generates their HTML, and puts on page. */
+
 
 $("#nav-favorites").on("click", putFavoriteStoriesOnPage)
 
+//puts favorite stories on page
 function putFavoriteStoriesOnPage() {
   $allStoriesList.empty();
-    console.log("hi")
     for(let story of storyList.stories) {
       if(story.favorite) {
 
@@ -74,6 +74,24 @@ function putFavoriteStoriesOnPage() {
     }
 }
 
+$("#nav-my-stories").on("click", putMyStoriesOnPage)
+
+//puts favorite stories on page
+function putMyStoriesOnPage() {
+  $allStoriesList.empty();
+    for(let story of storyList.stories) {
+      if(currentUser.username === story.username) {
+        
+        const $story = generateStoryMarkup(story)
+        $story.find("li").prepend(`<i class="fas fa-trash"></i>`)
+        $allStoriesList.append($story);
+
+      }
+    }
+}
+
+
+/** Gets list of stories from server, generates their HTML, and puts on page. */
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
 
