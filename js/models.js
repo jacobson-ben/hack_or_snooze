@@ -18,6 +18,7 @@ class Story {
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
+    this.favorite = false
   }
 
   /** Parses hostname out of URL and returns it. */
@@ -203,4 +204,22 @@ class User {
       return null;
     }
   }
+
+  //Add a method letting a user favorite a story
+
+  async addFavorite(story) {
+      console.log(story.storyId);
+      console.log(this.username);
+      console.log(this.loginToken);
+
+      let favoritedStoryResult = await axios({
+      method: 'post',
+      url: `https://hack-or-snooze-v3.herokuapp.com/users/${this.username}/favorites/${story.storyId}`,
+      data: {"token": this.loginToken}
+      })
+      console.log(favoritedStoryResult)
+  }
 }
+
+  //Add a method letting a user unfavorite a story
+  

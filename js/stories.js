@@ -64,7 +64,5 @@ async function addStoryFromForm(evt) {
 
   putStoriesOnPage();
   $("#new-story-form").trigger("reset");
-  //$("#new-story-form")[0].reset();
   $submitForm.toggle();
-  //reset the form 
 }
