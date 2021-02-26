@@ -27,6 +27,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <i class="far fa-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -37,9 +38,42 @@ function generateStoryMarkup(story) {
     `);
 }
 
+$(".stories-container").on("click", ".far", updateStarUI)
+
+function updateStarUI(evt) {
+  let currentStarClass = $(evt.target).attr("class");
+  let parentId = $(evt.target).parent().attr("id");
+  $(evt.target).toggleClass("fas");
+  updateFavoriteOnClick(currentStarClass, parentId)
+}
+
+function updateFavoriteOnClick(starClass, parentId) {
+  for(let story of storyList.stories) {
+    if(parentId === story.storyId && starClass === "far fa-star") {
+      currentUser.addFavorite(story)
+    }
+    if(parentId === story.storyId && starClass === "far fa-star fas") {
+      currentUser.removeFavorite(story)
+    }
+  }
+}
+
+
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
-//function putFavoriteOnPage()
+$("#nav-favorites").on("click", putFavoriteStoriesOnPage)
+
+function putFavoriteStoriesOnPage() {
+  $allStoriesList.empty();
+    console.log("hi")
+    for(let story of storyList.stories) {
+      if(story.favorite) {
+
+        const $story = generateStoryMarkup(story);
+        $allStoriesList.append($story);
+      }
+    }
+}
 
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
