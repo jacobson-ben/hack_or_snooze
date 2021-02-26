@@ -49,13 +49,15 @@ class StoryList {
    */
 
    refreshFavorites(){
-     for(let story of this.stories){
-        for(let fav of currentUser.favorites){
-          if(story.storyId === fav.storyId){
-            story.favorite = true;
+     if(currentUser){
+      for(let story of this.stories){
+          for(let fav of currentUser.favorites){
+            if(story.storyId === fav.storyId){
+              story.favorite = true;
+            }
           }
-        }
-     }
+      }
+    }
    }
 
   static async getStories() {
@@ -92,12 +94,27 @@ class StoryList {
       method: 'post',
       url: 'https://hack-or-snooze-v3.herokuapp.com/stories',
       data
-      //headers: {'Content-Type': 'application/json' }
-      })
+    })
     
     let storyInstance = new Story(storyResult.data.story);
     this.stories.unshift(storyInstance);
+    storyHash[storyInstance.storyId] = storyInstance;
     return storyInstance;
+  }
+
+  //removes story from a story list
+  async removeStory(user, story){
+    let data = { token: user.loginToken }
+    
+    await axios({
+      method: 'delete',
+      url: `https://hack-or-snooze-v3.herokuapp.com/stories/${story.storyId}`,
+      data
+    })
+    
+    //storyList.stories.splice(storyList.stories.indexOf(story), 1);
+    storyList.stories = storyList.stories.filter( curStory => curStory !== story );
+    delete storyHash[story.storyId];
   }
 }
 
@@ -227,8 +244,7 @@ class User {
       let newFavorites = result.data.user.favorites;
       this.favorites = newFavorites;
 
-      let id = story.storyId;
-      storyHash[id].favorite = true;
+      storyHash[story.storyId].favorite = true;
   }
 
 
@@ -244,7 +260,7 @@ class User {
     let newFavorites = result.data.user.favorites;
     this.favorites = newFavorites;
 
-    let id = story.storyId;
-    storyHash[id].favorite = false;
+    storyHash[story.storyId].favorite = false;
   } 
+
 }

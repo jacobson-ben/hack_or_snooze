@@ -12,6 +12,8 @@ async function getAndShowStoriesOnStart() {
     storyHash[story.storyId] = story;
   }
   //loop through user favorites and change story favorite to true
+
+  
   storyList.refreshFavorites();
   $storiesLoadingMsg.remove();
 
@@ -55,7 +57,7 @@ function updateStarUI(evt) {
 
 //updates favorites in the storyList and for the user
 function updateFavoriteOnClick(parentId) {
-  storyHash[parentId].favorite = !storyHash[parentId].favorite
+  storyHash[parentId].favorite = !storyHash[parentId].favorite;
 }
 
 
@@ -74,21 +76,33 @@ function putFavoriteStoriesOnPage() {
     }
 }
 
+
 $("#nav-my-stories").on("click", putMyStoriesOnPage)
 
 //puts stories user has created on the page
 function putMyStoriesOnPage() {
   $allStoriesList.empty();
-    for(let story of storyList.stories) {
-      if(currentUser.username === story.username) {
-        
-        const $story = generateStoryMarkup(story)
-        $story.prepend($(`<i class="fas fa-trash"></i>`))
-        $allStoriesList.append($story);
-      }
+  for(let story of storyList.stories) {
+    if(currentUser.username === story.username) {
+      
+      const $story = generateStoryMarkup(story)
+      $story.prepend($(`<i class="fas fa-trash"></i>`))
+      $allStoriesList.append($story);
     }
+  }
 }
 
+$(".stories-container").on("click", ".fa-trash", trashMyStory)
+
+function trashMyStory(evt) {
+  let story = storyHash[$(evt.target).closest("li").attr("id")]
+
+  //remove the story from story list
+  storyList.removeStory(currentUser, story);
+
+  //remove from ui
+  $(evt.target).closest("li").remove();
+}
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 function putStoriesOnPage() {
@@ -120,3 +134,10 @@ async function addStoryFromForm(evt) {
   $("#new-story-form").trigger("reset");
   $submitForm.toggle();
 }
+
+
+
+// function removeStory(evt){
+//   let id = $(evt.target).closest("li").attr("id");
+
+// }
