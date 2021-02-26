@@ -34,6 +34,7 @@ class Story {
  * List of Story instances: used by UI to show story lists in DOM.
  */
 
+
 class StoryList {
   constructor(stories) {
     this.stories = stories;
@@ -46,6 +47,16 @@ class StoryList {
    *  - makes a single StoryList instance out of that
    *  - returns the StoryList instance.
    */
+
+   refreshFavorites(){
+     for(let story of this.stories){
+        for(let fav of currentUser.favorites){
+          if(story.storyId === fav.storyId){
+            story.favorite = true;
+          }
+        }
+     }
+   }
 
   static async getStories() {
     // Note presence of `static` keyword: this indicates that getStories is
@@ -208,18 +219,29 @@ class User {
   //Add a method letting a user favorite a story
 
   async addFavorite(story) {
-      console.log(story.storyId);
-      console.log(this.username);
-      console.log(this.loginToken);
-
       let favoritedStoryResult = await axios({
       method: 'post',
       url: `https://hack-or-snooze-v3.herokuapp.com/users/${this.username}/favorites/${story.storyId}`,
       data: {"token": this.loginToken}
       })
-      console.log(favoritedStoryResult)
+      let newFavorites = favoritedStoryResult.data.user.favorites;
+      this.favorites = newFavorites;
+      let idx = storyList.stories.findIndex( x => x.storyId === story.storyId );
+      storyList.stories[idx].favorite = true;
   }
-}
+
 
   //Add a method letting a user unfavorite a story
   
+  async removeFavorite(story) {
+    let favoritedStoryResult = await axios({
+    method: 'delete',
+    url: `https://hack-or-snooze-v3.herokuapp.com/users/${this.username}/favorites/${story.storyId}`,
+    data: {"token": this.loginToken}
+    })
+    let newFavorites = favoritedStoryResult.data.user.favorites;
+    this.favorites = newFavorites;
+    let idx = storyList.stories.findIndex( x => x.storyId === story.storyId );
+    storyList.stories[idx].favorite = false;
+  } 
+}

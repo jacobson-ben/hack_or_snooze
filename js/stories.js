@@ -7,6 +7,8 @@ let storyList;
 
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
+  //loop through user favorites and change story favorite to true
+  storyList.refreshFavorites();
   $storiesLoadingMsg.remove();
 
   putStoriesOnPage();
@@ -36,6 +38,8 @@ function generateStoryMarkup(story) {
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
+
+//function putFavoriteOnPage()
 
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
