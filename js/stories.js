@@ -2,11 +2,15 @@
 
 // This is the global list of the stories, an instance of StoryList
 let storyList;
-
+let storyHash = {};
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
+  
+  for(let story of storyList.stories){
+    storyHash[story.storyId] = story;
+  }
   //loop through user favorites and change story favorite to true
   storyList.refreshFavorites();
   $storiesLoadingMsg.remove();
@@ -25,9 +29,10 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  let cl = story.favorite ? "far fa-star fas": "far fa-star";
   return $(`
       <li id="${story.storyId}">
-        <i class="far fa-star"></i>
+        <i class="${cl}"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -40,24 +45,18 @@ function generateStoryMarkup(story) {
 
 $(".stories-container").on("click", ".far", updateStarUI)
 
+//toggles star icon and adds/removes from favorites
 function updateStarUI(evt) {
   let currentStarClass = $(evt.target).attr("class");
   let parentId = $(evt.target).parent().attr("id");
   $(evt.target).toggleClass("fas");
-  updateFavoriteOnClick(currentStarClass, parentId)
+  updateFavoriteOnClick(parentId)
 }
 
-function updateFavoriteOnClick(starClass, parentId) {
-  for(let story of storyList.stories) {
-    if(parentId === story.storyId && starClass === "far fa-star") {
-      currentUser.addFavorite(story)
-    }
-    if(parentId === story.storyId && starClass === "far fa-star fas") {
-      currentUser.removeFavorite(story)
-    }
-  }
+//updates favorites in the storyList and for the user
+function updateFavoriteOnClick(parentId) {
+  storyHash[parentId].favorite = !storyHash[parentId].favorite
 }
-
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 

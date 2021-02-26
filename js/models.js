@@ -219,29 +219,32 @@ class User {
   //Add a method letting a user favorite a story
 
   async addFavorite(story) {
-      let favoritedStoryResult = await axios({
-      method: 'post',
-      url: `https://hack-or-snooze-v3.herokuapp.com/users/${this.username}/favorites/${story.storyId}`,
-      data: {"token": this.loginToken}
+      let result = await axios({
+        method: 'post',
+        url: `https://hack-or-snooze-v3.herokuapp.com/users/${this.username}/favorites/${story.storyId}`,
+        data: {token: this.loginToken}
       })
-      let newFavorites = favoritedStoryResult.data.user.favorites;
+      let newFavorites = result.data.user.favorites;
       this.favorites = newFavorites;
-      let idx = storyList.stories.findIndex( x => x.storyId === story.storyId );
-      storyList.stories[idx].favorite = true;
+
+      let id = story.storyId;
+      storyHash[id].favorite = true;
   }
 
 
   //Add a method letting a user unfavorite a story
   
   async removeFavorite(story) {
-    let favoritedStoryResult = await axios({
-    method: 'delete',
-    url: `https://hack-or-snooze-v3.herokuapp.com/users/${this.username}/favorites/${story.storyId}`,
-    data: {"token": this.loginToken}
+    let result = await axios({
+      method: 'delete',
+      url: `https://hack-or-snooze-v3.herokuapp.com/users/${this.username}/favorites/${story.storyId}`,
+      data: {token: this.loginToken}
     })
-    let newFavorites = favoritedStoryResult.data.user.favorites;
+
+    let newFavorites = result.data.user.favorites;
     this.favorites = newFavorites;
-    let idx = storyList.stories.findIndex( x => x.storyId === story.storyId );
-    storyList.stories[idx].favorite = false;
+
+    let id = story.storyId;
+    storyHash[id].favorite = false;
   } 
 }
