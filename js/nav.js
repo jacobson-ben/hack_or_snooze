@@ -38,10 +38,7 @@ function updateNavOnLogin() {
 
 function displaySubmit(evt) {
   console.log($submitForm.css("display"));
-  if($submitForm.css("display") === "none") {
-    $submitForm.show();
-  }
-  else { $submitForm.hide() }
+  $submitForm.toggle();
 }
 
 $("#nav-submit").on("click", displaySubmit)

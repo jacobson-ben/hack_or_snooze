@@ -50,3 +50,21 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+//Get's input from submit form and calls addStory
+
+$("#new-story-form").on("submit", addStoryFromForm);
+
+async function addStoryFromForm(evt) {
+  evt.preventDefault();
+  const author = $("#author").val();
+  const title = $("#title").val();
+  const url = $("#url").val();
+  await storyList.addStory(currentUser, {title,author,url});
+
+  putStoriesOnPage();
+  $("#new-story-form").trigger("reset");
+  //$("#new-story-form")[0].reset();
+  $submitForm.toggle();
+  //reset the form 
+}

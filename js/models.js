@@ -75,18 +75,16 @@ class StoryList {
   async addStory(user, story) {
     let token = user.loginToken;
     let data = {token, story};
-    console.log(data);
     
     let storyResult = await axios({
       method: 'post',
       url: 'https://hack-or-snooze-v3.herokuapp.com/stories',
-      data: data,
-      headers: {'Content-Type': 'application/json' }
+      data
+      //headers: {'Content-Type': 'application/json' }
       })
     
     let storyInstance = new Story(storyResult.data.story);
-    console.log(storyInstance);
-    this.stories.push(storyInstance);
+    this.stories.unshift(storyInstance);
     return storyInstance;
   }
 }
