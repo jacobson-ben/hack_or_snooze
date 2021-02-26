@@ -76,16 +76,15 @@ function putFavoriteStoriesOnPage() {
 
 $("#nav-my-stories").on("click", putMyStoriesOnPage)
 
-//puts favorite stories on page
+//puts stories user has created on the page
 function putMyStoriesOnPage() {
   $allStoriesList.empty();
     for(let story of storyList.stories) {
       if(currentUser.username === story.username) {
         
         const $story = generateStoryMarkup(story)
-        $story.find("li").prepend(`<i class="fas fa-trash"></i>`)
+        $story.prepend($(`<i class="fas fa-trash"></i>`))
         $allStoriesList.append($story);
-
       }
     }
 }
